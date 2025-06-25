@@ -46,7 +46,7 @@ class CartService
         }
         else
         {
-            return [];
+            return new Cart();
         }
     }
 

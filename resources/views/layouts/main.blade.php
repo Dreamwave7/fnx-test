@@ -7,7 +7,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
     <meta name="description" content="EcoStore">
 
-    <title>EcoStore || Grocery Store</title>
+    <title>Fenix test task</title>
 
     <!-- Favicon -->
     <link rel="shortcut icon" type="image/x-icon" href="assets/media/favicon.png">
@@ -120,7 +120,7 @@
                                     </svg>
                                     <div>
                                         <p class="caption mb-1">Корзина:</p>
-                                        <h6 class="subtitle fw-400 black">$11</h6>
+                                        <h6 class="subtitle fw-400 black">${{ $cart->getTotalSum() }}</h6>
                                     </div>
                                 </a>
                             </div>
@@ -215,8 +215,6 @@
 
         </li>
 
-
-
         @empty
             <p>Корзина пуста</p>
         @endforelse
@@ -224,9 +222,11 @@
     </ul>
     <div class="price-total p-24">
         <span class="h5">TOTAL</span>
-        <span class="h5">$44</span>
+        <span class="h5">${{ $cart->getTotalSum() }}</span>
     </div>
     <div class="action-buttons p-24">
+
+        @if(isset($cart->id))
         <form action="{{ route('cart.all.remove',['cart' => $cart]) }}" method="post" >
             @csrf
             @method('DELETE')
@@ -234,6 +234,7 @@
                 <i class="bi bi-trash3 me-2"></i>Очистити корзину
             </button>
         </form>
+        @endif
     </div>
     <div class="hr-line mb-24"></div>
 
