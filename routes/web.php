@@ -24,8 +24,10 @@ Route::get('/index',[ProductController::class,'index'])->name('product.index');
 
 Route::post('/cart/add',[ProductController::class,'addToCart'])->name('cart.store');
 
-Route::put('/cart/{cartItem}',[ProductController::class,'index'])->name('cart.add');
+Route::patch('/cart/{cartItem}',[ProductController::class,'updateCartItem'])->name('cart.update');
 
-Route::delete('/cart/{cartItem}',[ProductController::class,'index'])->name('cart.remove');
+Route::delete('/cart/{cartItem}',[ProductController::class,'removeCartItem'])->name('cart.remove');
+
+Route::delete('/cart/{cart}/all',[ProductController::class,'removeCart'])->name('cart.all.remove');
 
 

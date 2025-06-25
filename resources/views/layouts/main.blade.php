@@ -86,10 +86,10 @@
                                         <nav class="flex items-center justify-end gap-4">
                                             @auth
                                                 <a
-                                                    href="{{ url('/dashboard') }}"
+                                                    href="#"
                                                     class="inline-block px-5 py-1.5 dark:text-[#EDEDEC] border-[#19140035] hover:border-[#1915014a] border text-[#1b1b18] dark:border-[#3E3E3A] dark:hover:border-[#62605b] rounded-sm text-sm leading-normal"
                                                 >
-                                                    Dashboard
+                                                    -{{ \Illuminate\Support\Facades\Auth::user()->email }}
                                                 </a>
                                             @else
                                                 <a
@@ -119,9 +119,8 @@
                                             stroke-linejoin="round" />
                                     </svg>
                                     <div>
-                                        <p class="caption mb-1">Shopping cart:</p>
-                                        <h6 class="subtitle fw-400 black">$57.00</h6>
-
+                                        <p class="caption mb-1">Корзина:</p>
+                                        <h6 class="subtitle fw-400 black">$11</h6>
                                     </div>
                                 </a>
                             </div>
@@ -175,73 +174,69 @@
 <!-- Shopping Cart Popup Start -->
 <aside id="sidebar-cart">
     <div class="title-cart-block mb-32 bg-lightest-gray">
-        <h6>Shopping Cart (02)</h6>
+        <h6>Shopping Cart </h6>
         <a href="#" class="close-button close-popup"><span class="close-icon">X</span></a>
     </div>
     <ul class="product-list p-24">
+
+        @forelse($cart->cartItem as $cartItem)
+
+
         <li class="product-item mb-24">
             <div class="d-flex align-items-center gap-12">
                 <div class="item-image">
-                    <img src="assets/media/products/prodduct-1.png" alt="Product Photo">
+                    <img src="{{ asset('storage/'.$cartItem->product->image) }}" alt="Product Photo">
                 </div>
+
                 <div class="prod-title">
-                    <a href="" class="h6 black mb-8">Tomatoes</a>
-                    <p class="mb-4p">Quantity: 5</p>
-                    <p>$30.00</p>
+                    <a href="" class="h6 black mb-8">{{ $cartItem->product->name }}</a>
+                    <p>${{ $cartItem->product->price }}</p>
                 </div>
             </div>
             <div class="text-end">
-                <a href="javascript:;" class="cancel mb-12">
-                    <img src="assets/media/icons/cancel.png" alt="">
-                </a>
-                <div class="quantity quantity-wrap">
-                    <div class="input-area quantity-wrap">
-                        <input class="decrement" type="button" value="-">
-                        <input type="text" name="quantity" value="1" maxlength="2" size="1" class="number">
-                        <input class="increment" type="button" value="+">
+                <form action="{{ route('cart.remove',['cartItem' => $cartItem]) }}" method="post">
+                    @csrf
+                    @method('DELETE')
+                    <button class="btn-outline-warning" type="submit">Видалити</button>
+                </form>
+                <form action="{{ route('cart.update',['cartItem' => $cartItem]) }}" method="post"  >
+                    @csrf
+                    @method('PATCH')
+                    <div class="quantity quantity-wrap">
+                        <div class="input-area quantity-wrap">
+                            <input class="decrement" type="button" value="-">
+                            <input type="text" name="quantity" value="{{ $cartItem->quantity }}" maxlength="2" size="1" class="number">
+                            <input class="increment" type="button" value="+">
+                            <button class="btn" type="submit">Застосувати</button>
+                        </div>
                     </div>
-                </div>
+                </form>
             </div>
+
         </li>
-        <li class="hr-line mb-24"></li>
-        <li class="product-item mb-24">
-            <div class="d-flex align-items-center gap-12">
-                <div class="item-image">
-                    <img src="assets/media/products/prodduct-2.png" alt="Product Photo">
-                </div>
-                <div class="prod-title">
-                    <a href="" class="h6 black mb-8">cart item test</a>
-                    <p class="mb-4p">Quantity: 3</p>
-                    <p>$12.00</p>
-                </div>
-            </div>
-            <div class="text-end">
-                <a href="javascript:;" class="cancel mb-12">
-                    <img src="assets/media/icons/cancel.png" alt="">
-                </a>
-                <div class="quantity quantity-wrap">
-                    <div class="input-area quantity-wrap">
-                        <input class="decrement" type="button" value="-">
-                        <input type="text" name="quantity" value="1" maxlength="2" size="1" class="number">
-                        <input class="increment" type="button" value="+">
-                    </div>
-                </div>
-            </div>
-        </li>
+
+
+
+        @empty
+            <p>Корзина пуста</p>
+        @endforelse
+
     </ul>
     <div class="price-total p-24">
-        <span class="h5">SUBTOTAL</span>
-        <span class="h5">$281.98</span>
+        <span class="h5">TOTAL</span>
+        <span class="h5">$44</span>
+    </div>
+    <div class="action-buttons p-24">
+        <form action="{{ route('cart.all.remove',['cart' => $cart]) }}" method="post" >
+            @csrf
+            @method('DELETE')
+            <button type="submit" class="btn btn-outline-danger">
+                <i class="bi bi-trash3 me-2"></i>Очистити корзину
+            </button>
+        </form>
     </div>
     <div class="hr-line mb-24"></div>
-    <div class="action-buttons p-24">
-        <a href="" class="cus-btn light-btn">
-            <span class="circle"></span>
-            <span class="text">VIEW CART</span> </a>
-        <a href="" class="cus-btn light-btn">
-            <span class="circle"></span>
-            <span class="text">CHECKOUT</span> </a>
-    </div>
+
 </aside>
 <div id="sidebar-cart-curtain" class="close-popup"></div>
 <!-- Shopping Cart Popup End -->

@@ -2,6 +2,7 @@
 
 namespace App\Service;
 
+use App\Http\Requests\UpdateCartItemRequest;
 use App\Models\Cart;
 use App\Models\CartItem;
 use Illuminate\Http\Request;
@@ -32,13 +33,29 @@ class CartService
             $cartItem->quantity  = $cartItem->quantity + $quantity;
             $cartItem->save();
         }
+        return $cartItem;
     }
 
     public function checkUserCart(Request $request)
     {
         $idOrSession = Auth::user() ? ['user_id' => Auth::user()->id] : ['session_id' => $request->session()->getId()];
         $cartUser = Cart::where($idOrSession)->first();
-        dd($cartUser->cartItem);
+        if (isset($cartUser))
+        {
+            return $cartUser;
+        }
+        else
+        {
+            return [];
+        }
+    }
+
+    public function updateCartItem($quantity, CartItem $cartItem)
+    {
+        $cartItem->quantity = $quantity;
+        $cartItem->save();
+        return $cartItem;
+
     }
 
 

@@ -3,7 +3,9 @@
 namespace App\Http\Controllers;
 
 use App\Http\Requests\ProductRequest;
+use App\Http\Requests\UpdateCartItemRequest;
 use App\Models\Cart;
+use App\Models\CartItem;
 use App\Models\Product;
 use App\Models\User;
 use App\Service\CartService;
@@ -21,10 +23,12 @@ class ProductController extends Controller
     public function index(Request $request)
     {
         $products = Product::all();
-        $this->cartService->checkUserCart($request);
+        $cart = $this->cartService->checkUserCart($request);
+//        $totalsum =  $cart->getTotalSum();
 
 
-        return view('products.index',compact('products'));
+
+        return view('products.index',compact('products','cart'));
     }
 
     public function addToCart(ProductRequest $request)
@@ -40,7 +44,25 @@ class ProductController extends Controller
 
         return redirect()->back();
 
+    }
 
+    public function updateCartItem(UpdateCartItemRequest $request, CartItem $cartItem)
+    {
+        $validated = $request->validated();
+        $this->cartService->updateCartItem($validated['quantity'], $cartItem);
+        return redirect()->back();
+    }
+
+    public function removeCartItem(CartItem $cartItem)
+    {
+        $cartItem->delete();
+        return redirect()->back();
+    }
+
+    public function removeCart(Cart $cart)
+    {
+        $cart->delete();
+        return redirect()->back();
     }
 
 
