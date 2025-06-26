@@ -47,6 +47,8 @@ cd fnx-test
 
 #  Встановлення залежностей 
 composer install
+php artisan storage:link
+
 npm install
 npm run dev
 
