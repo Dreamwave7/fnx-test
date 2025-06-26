@@ -24,7 +24,7 @@ class ProductController extends Controller
     {
         $products = Product::all();
         $cart = $this->cartService->checkUserCart($request);
-//        $totalsum =  $cart->getTotalSum();
+
 
 
 
