@@ -63,6 +63,7 @@ php artisan migrate:fresh --seed
 #  Запуск проекту локально
 php artisan serve 
 
+Адреса - http://127.0.0.1:8000/index
 
 # Резюме 
 [Dmytro Lisovyi CV.pdf](https://github.com/user-attachments/files/20922237/Dmytro.Lisovyi.CV.pdf)
